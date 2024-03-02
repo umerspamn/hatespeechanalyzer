@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hate Speech Detection</title>
+</head>
+<body>
+    <h1>Hate Speech Detection</h1>
+    <form id="prediction-form">
+        <label for="text-input">Enter text:</label><br>
+        <textarea id="text-input" rows="4" cols="50"></textarea><br>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="prediction-result"></div>
+
+    <script>
+        document.getElementById("prediction-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var textInput = document.getElementById("text-input").value;
+            fetch("/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({text: textInput})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("prediction-result").innerText = "Prediction: " + data.prediction;
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
